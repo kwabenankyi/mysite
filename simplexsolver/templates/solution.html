@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Solution:</h2>
+    <p>Given the objective is to <b>{{maxmin}} {{ objectivefunction}}</b>, <br>and the constraints were:<br>{% for i in constraints %}<b>{{i}}</b><br> {% endfor %}</p>
+    <p>The optimal value is <b>{{ optimalvalue }}</b>.</p>
+    <p>The optimal solution is:<br><b>{{final|safe}}</b>.</p>
+{% endblock %}

@@ -1,0 +1,18 @@
+.topnav {
+	background-color: wheat;
+	overflow: hidden;
+	line-height: 2.5;
+	}
+
+body { background-color: darkblue;
+	color: wheat;
+	font: 24px Helvetica Neue, sans-serif;  
+	/*line-height: 2.5;*/
+	text-align: center;
+	}
+	
+input[type=submit] {
+	background-color: DodgerBlue;
+	color: #fff;
+	cursor: pointer;
+	}
