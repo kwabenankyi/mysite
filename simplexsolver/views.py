@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import ObjectiveFunctionForm, ConstraintForm, ConstraintsFormSet
+from .forms import ObjectiveFunctionForm, ConstraintsFormSet
 from .simplex import Simplex
 
 # Create your views here.
