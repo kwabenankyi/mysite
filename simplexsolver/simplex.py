@@ -250,27 +250,3 @@ class Simplex:
         else:
             self.setArtificialFunction()
             self.executeToSecondStage()
-
-"""constraints = ["x+y+2z<=10","2x-3y+z>=5","x+y>=8"]
-objFunction = "max 3x-2y+z"
-
-constraints = ["2x+y+z<=20","x>=4","x-2y-z<=7"]
-objFunction = "max x-y+z
-constraints = []
-objFunction = ""
-if (objFunction.startswith("max") or objFunction.startswith("min")) != True:
-    objFunction = input("Enter whether you want to 'max'/'min', then your objective function: ")
-
-newConstraint = ""
-while newConstraint != "done":
-    newConstraint = input("\nEnter a constraint, or 'r' to delete the most recent constraint added, or 'done' if you don't have any more: ")
-    if newConstraint == "r":
-        print("Removed",constraints.pop())
-    else:
-        if newConstraint != "done":
-            constraints.append(newConstraint)
-    
-print(constraints)
-mat = Simplex(constraints, objFunction)
-#print(mat.variables)
-mat.exe()"""
