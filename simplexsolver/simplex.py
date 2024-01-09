@@ -6,12 +6,12 @@ class Simplex:
     def __init__(self, constraints: list, objFunction: str):
         self.constraints = constraints
         self.objFunction = objFunction
+        self.finalVariables = {}
         self.matrix, self.variables, self.coefficients, self.basicVariables = self.initialiseMatrix(constraints, objFunction)
         self.numOfRows = len(self.matrix)
         self.numOfCols = len(self.matrix[0])
         self.currentPivotCol = -1
         self.currentPivotRow = -1
-        self.finalVariables = {}
         self.optimalValue = 0
 
     def getVarIndex(self, var):
@@ -100,7 +100,9 @@ class Simplex:
         objCo[0]["rhs"] = 0
 
         allvars, allcoeffs, basicVariables, self.artFlag = self.checkConstraints(constraints, var, co)
-
+        for item in objVar:
+            if item not in allvars:
+                self.finalVariables[item] = 0
         #the row and column for the objective function
         numOfRows = len(allcoeffs) + 1
         numOfCols = len(allvars) + 1

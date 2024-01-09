@@ -12,12 +12,12 @@ def index(request):
             d = request.POST.dict()
             objectivefunction=d['formset1-objective_function']
             constraints=[]
-            numofconstraints = (len(d)-7)//2
+            numofconstraints = len(d)-7
             #validation for constraints
             for i in range(numofconstraints):
                 newcon = d['formset2-'+str(i)+'-constraint']
                 if ('<=' in newcon) or ('>=' in newcon):
-                    constraints.append(d['formset2-'+str(i)+'-constraint'])
+                    constraints.append(newcon)
                 else:
                     return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2})
             return solution(request,d['maxmin'],objectivefunction,constraints)
@@ -33,8 +33,6 @@ def solution(request,maxmin,objectivefunction,constraints):
     mat = Simplex(constraints,(maxmin+" "+objectivefunction))
     mat.exe()
     finalvars=''
-    count=1
     for (key,value) in mat.finalVariables.items():
-        finalvars+=str(count)+": "+key+"="+str(value)+",<br>"
-        count+=1
+        finalvars+=key+"="+str(value)+",<br>"
     return render(request, "solution.html", {'valid':True,'maxmin': maxmin, 'objectivefunction': objectivefunction, 'constraints': constraints, 'optimalvalue':mat.optimalValue, 'vars':mat.variables, 'final':finalvars[:len(finalvars)-5]})

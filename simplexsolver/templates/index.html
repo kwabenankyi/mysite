@@ -6,10 +6,14 @@
     <h2>Enter your problem below:</h2>
     <form method="post" action="" id="dynamic-form">
         <label for="maxmin">I want to:</label>
-        <select name="maxmin" id="maxmin">
+        <select name="maxmin" id="maxmin" style="font-size: medium;">
             <option value="max">Maximise</option>
             <option value="min">Minimise</option>
         </select>
+        <!--Alternative input for max/min-->
+        <!--<input type="radio" name="maxmin" id="maxmin" value="max">Maximise</input>
+        <input type="radio" name="maxmin" id="maxmin" value="min">Minimise</input>-->
+        {% csrf_token %}
         {% csrf_token %}
         {{ formset1.as_p }}
         {{ formset2.management_form }}
@@ -19,42 +23,46 @@
         {% endfor %}</div>
         <button type="button" id="add-constraint" onclick="addConstraintField()">Add another constraint</button>
         <button type="submit" text="Solve">Submit</button>
-        
+    
+    <p style="font-size: medium;"><i>Note: any variable in the objective function with no constraint is assumed to be equal to 0.</i></p>
     </form>
     <script>
         var length = (document.getElementById("form2").getElementsByTagName("label").length);
         function addConstraintField() {
-            var myForm = document.getElementById("form2");
-            // get the number of inputs in the form
-            const numInputs = myForm.getElementsByTagName("input").length;
-            // create an input field to insert
-            const newField = document.createElement("input");
-            const hiddenField = document.createElement("input");
-            // set input field data type to text
-            newField.type = "text";
-            hiddenField.type = "hidden";
-            // set input field name
-            newField.name = "formset2-"+(length)+"-constraint";
-            hiddenField.name = "formset2-"+(length)+"-id";
-            newField.id = "id_formset2-"+(length)+"-constraint";
-            hiddenField.id = "id_formset2-"+(length)+"-id";
-            newField.placeholder = "Additional constraint";
-            newField.maxLength = "200";
-            newField.value = "";
-            hiddenField.value = length+1;
-            // set required
-            newField.setAttribute("required", "");
-            newDiv = document.createElement("div");
-            newLabel = document.createElement("label");
-            newLabel.setAttribute("for", newField.id);
-            newLabel.innerHTML = "Constraint: ";
-            // insert element
-            newDiv.appendChild(newLabel);
-            newDiv.appendChild(newField);
-            newDiv.appendChild(hiddenField);
-            myForm.appendChild(newDiv);
-            // new line
-            length++;
+            if (length < 20)
+            {
+                var myForm = document.getElementById("form2");
+                // get the number of inputs in the form
+                const numInputs = myForm.getElementsByTagName("input").length;
+                // create an input field to insert
+                const newField = document.createElement("input");
+                const hiddenField = document.createElement("input");
+                // set input field data type to text
+                newField.type = "text";
+                hiddenField.type = "hidden";
+                // set input field name
+                newField.name = "formset2-"+(length)+"-constraint";
+                //hiddenField.name = "formset2-"+(length)+"-id";
+                newField.id = "id_formset2-"+(length)+"-constraint";
+                hiddenField.id = "id_formset2-"+(length)+"-id";
+                newField.placeholder = "Additional constraint";
+                newField.maxLength = "200";
+                newField.value = "";
+                hiddenField.value = length+1;
+                // set required
+                newField.setAttribute("required", "");
+                newDiv = document.createElement("div");
+                newLabel = document.createElement("label");
+                newLabel.setAttribute("for", newField.id);
+                newLabel.innerHTML = "Constraint: ";
+                // insert element
+                newDiv.appendChild(newLabel);
+                newDiv.appendChild(newField);
+                newDiv.appendChild(hiddenField);
+                myForm.appendChild(newDiv);
+                // new line
+                length++;
+            }
         }
       </script>
 
