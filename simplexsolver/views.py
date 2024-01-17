@@ -14,13 +14,24 @@ def index(request):
             constraints=[]
             numofconstraints = len(d)-7
             #validation for constraints
+            if ("+" not in objectivefunction) and ("-" not in objectivefunction):
+                return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2,'message':"Invalid input. Objective function must contain a '+' or '-' sign. Try again."})
+            vars=set()
+            for char in objectivefunction:
+                if char.isalpha():
+                    vars.add(char)
+            #checks if all variables in constraints are present in objective function
             for i in range(numofconstraints):
                 newcon = d['formset2-'+str(i)+'-constraint']
-                if ('<=' in newcon) or ('>=' in newcon):
+                if ('<=' in newcon) or ('>=' in newcon): #format check
                     constraints.append(newcon)
+                    for char in newcon:
+                        if char.isalpha() and char not in vars:
+                            return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. All variables in constraints must be present in the objective function. Try again."})
                 else:
-                    return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2})
+                    return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. Constraints must contain a "<=" or ">=" sign. Try again."})
             return solution(request,d['maxmin'],objectivefunction,constraints)
+
     else:
         formset1 = ObjectiveFunctionForm(prefix="formset1")
         formset2 = ConstraintsFormSet(prefix="formset2")

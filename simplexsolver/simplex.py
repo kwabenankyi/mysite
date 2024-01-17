@@ -19,9 +19,9 @@ class Simplex:
     def extract_variables_and_coefficients(self, equations):
         variables = set()
         rowOfCoefficients = []
+        term_pattern = re.compile(r'([+-]?\d+|-)?([a-zA-Z]+)?')
         for equation in equations:
             # Define a regular expression pattern to match terms in the equation
-            term_pattern = re.compile(r'([+-]?\d+|-)?([a-zA-Z]+)?')
             terms = term_pattern.findall(equation)
             emptycount = 0
             for term in terms:
@@ -37,13 +37,11 @@ class Simplex:
 
                 # If the coefficient is empty, set it to 1 or -1 based on the sign
                 if coefficient == '':
-                    coefficient = 1 
+                    coefficient = float(1)
                 if coefficient == '-':
-                    coefficient = -1
-                
-                coefficient = float(coefficient)
+                    coefficient = float(-1)
 
-                if variable:
+                if variable:#key variable, value is its coefficient
                     variables.add(variable)
                     coefficients[variable] = coefficient
                 else:
