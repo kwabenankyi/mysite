@@ -47,3 +47,6 @@ def solution(request,maxmin,objectivefunction,constraints):
     for (key,value) in mat.finalVariables.items():
         finalvars+=key+"="+str(value)+",<br>"
     return render(request, "solution.html", {'valid':True,'maxmin': maxmin, 'objectivefunction': objectivefunction, 'constraints': constraints, 'optimalvalue':mat.optimalValue, 'vars':mat.variables, 'final':finalvars[:len(finalvars)-5]})
+
+def about(request):
+    return render(request, "about.html")

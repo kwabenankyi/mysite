@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+<head><title>Linear programming simplex solver</title></head>
 {% block content %}
     {% if valid == False %}
         <h2 style="color: crimson;">{{message}}</h2>
@@ -7,7 +8,7 @@
     <form method="post" action="" id="dynamic-form">
         <label for="maxmin">I want to:</label>
         <select name="maxmin" id="maxmin" style="font-size: medium;">
-            <option value="max">Maximise</option><br>
+            <option value="max">Maximise</option><br/>
             <option value="min">Minimise</option>
         </select>
         <!--Alternative input for max/min-->
@@ -19,13 +20,13 @@
         {{ formset2.management_form }}
         <div id="form2">
         {% for form in formset2 %}
-            {{ form }}<br>
+            {{ form }}
         {% endfor %}</div>
         <button type="button" id="add-constraint" onclick="addConstraintField()">Add new constraint</button>
         <span id="remove"></span>
         <button type="submit" id="submit">Submit</button>
     <p id="note" style="font-size: medium;"><i>Note: any variable in the objective function with no constraint is assumed to be equal to 0.</i></p>
     </form>
-    <script src="../static/index.js"></script>
+    <script src="/static/index.js"></script>
 
 {% endblock %}

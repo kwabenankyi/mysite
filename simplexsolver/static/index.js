@@ -1,32 +1,30 @@
 function calcLength() {
-    var length = (document.getElementById("form2").getElementsByTagName("label").length);
-    return length;
+    return document.getElementById("form2").getElementsByTagName("label").length;   
 }
 
 function removeConstraintField() {
-    var myForm = document.getElementById("form2");
-    var length = calcLength();
+    let myForm = document.getElementById("form2");
+    let length = calcLength();
     console.log("length: " + length);
-    var lastDiv = document.getElementById("div-formset2-"+(length-1)+"-constraint");
+    let lastDiv = document.getElementById("div-formset2-"+(length-1)+"-constraint");
     myForm.removeChild(lastDiv);
     console.log("removed constraint");
-    if (!(length > 3)) {
+    if (length < 4) {
         //remove itself
-        var removeButton = document.getElementById("remove");
+        let removeButton = document.getElementById("remove");
         removeButton.removeChild(removeButton.childNodes[0]);
     }
 }
 
 function addConstraintField() {
-    const newDiv = document.createElement("div");
-    var myForm = document.getElementById("form2");
-    var length = calcLength();
-    if (length < 20)
-    {
+    let newDiv = document.createElement("div");
+    let myForm = document.getElementById("form2");
+    let length = calcLength();
+    if (length < 20) {
         console.log("length: " + length);
-        const numInputs = myForm.getElementsByTagName("input").length;
+        let numInputs = myForm.getElementsByTagName("input").length;
+        let newField = document.createElement("input");
 
-        const newField = document.createElement("input");
         newField.type = "text";
         newField.name = "formset2-"+(length)+"-constraint";
         newField.id = "id_formset2-"+(length)+"-constraint";
@@ -39,16 +37,10 @@ function addConstraintField() {
         newLabel.setAttribute("for", newField.id);
         newLabel.innerHTML = "Constraint: ";
 
-        /*hiddenField.name = "formset2-"+(length)+"-id";
-        const hiddenField = document.createElement("input");
-        hiddenField.type = "hidden";
-        hiddenField.id = "id_formset2-"+(length)+"-id";
-        hiddenField.value = length+1;*/
-        
         newDiv.id = "div-formset2-"+(length)+"-constraint";
 
         //add remove button next to the new input field - constraint remains centred but remove button is right aligned
-        const removeButton = document.createElement("button");
+        let removeButton = document.createElement("button");
         removeButton.name = "remove";
         removeButton.id = "remove";
         removeButton.innerHTML = "Remove constraint";
@@ -61,13 +53,11 @@ function addConstraintField() {
         myForm.appendChild(newDiv);
         console.log("added constraint");
         //place remove next to the submit button
-        if (length < 3)
-        {
-            (document.getElementById("remove")).appendChild(removeButton);
+        if (length < 3) {
+            document.getElementById("remove").appendChild(removeButton);
         }
-    }
-    else
-    {
+    } 
+    else {
         newDiv.innerHTML = "<p style='color: crimson;'>You have reached the maximum number of constraints.</p>";
         myForm.appendChild(newDiv);
     }
