@@ -7,4 +7,5 @@ urlpatterns = [
     path("solution", views.solution, name="solution"),
     path("about", views.about, name="about"),
     path("privacypolicy", views.privacypolicy, name="privacypolicy"),
+    path("ads.txt", views.ads, name="ads")
 ]

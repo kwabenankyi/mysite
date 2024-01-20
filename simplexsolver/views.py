@@ -56,3 +56,6 @@ def privacypolicy(request):
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
+
+def ads(request):
+    return render(request, "ads.txt", content_type="text/plain")
