@@ -1,5 +1,7 @@
-<head><title>Linear programming simplex solution</title></head>
 {% extends "base.html" %}
+{% block title %}
+    <title>Linear programming simplex solution</title>
+{% endblock %}
 {% block content %}
     <h2>Solution:</h2>
     <p>Given the objective is to <b>{{maxmin}} {{ objectivefunction}}</b>, <br/>and the constraints were:<br/>{% for i in constraints %}<b>{{forloop.counter}}: {{i}}</b><br/> {% endfor %}</p>

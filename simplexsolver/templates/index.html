@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-<head><title>Linear programming simplex solver</title></head>
+{% block title %}
+    <title>Linear programming simplex solver</title>
+{% endblock %}
 {% block content %}
     {% if valid == False %}
         <h2 style="color: crimson;">{{message}}</h2>
@@ -20,7 +22,7 @@
         {{ formset2.management_form }}
         <div id="form2">
         {% for form in formset2 %}
-            {{ form }}
+            {{ form }}<br/>
         {% endfor %}</div>
         <button type="button" id="add-constraint" onclick="addConstraintField()">Add new constraint</button>
         <span id="remove"></span>

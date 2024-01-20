@@ -22,7 +22,6 @@ function addConstraintField() {
     let length = calcLength();
     if (length < 20) {
         console.log("length: " + length);
-        let numInputs = myForm.getElementsByTagName("input").length;
         let newField = document.createElement("input");
 
         newField.type = "text";
