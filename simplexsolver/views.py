@@ -50,3 +50,9 @@ def solution(request,maxmin,objectivefunction,constraints):
 
 def about(request):
     return render(request, "about.html")
+
+def privacypolicy(request):
+    return render(request, "privacypolicy.html")
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
