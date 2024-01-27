@@ -34,7 +34,7 @@ function addConstraintField() {
 
         newLabel = document.createElement("label");
         newLabel.setAttribute("for", newField.id);
-        newLabel.innerHTML = "Constraint: ";
+        newLabel.innerHTML = "Constraint:&nbsp;";
 
         newDiv.id = "div-formset2-"+(length)+"-constraint";
 
