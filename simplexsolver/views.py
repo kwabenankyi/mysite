@@ -30,7 +30,7 @@ def index(request):
                             return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. All variables in constraints must be present in the objective function. Try again."})
                 else:
                     return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. Constraints must contain a "<=" or ">=" sign. Try again."})
-            return solution(request,d['maxmin'],objectivefunction,constraints)
+            return solution(request=request,maxmin=d['maxmin'],objectivefunction=objectivefunction,constraints=constraints)
 
     else:
         formset1 = ObjectiveFunctionForm(prefix="formset1")
@@ -38,9 +38,11 @@ def index(request):
     
     return render(request, "index.html", {'valid':True,'formset1': formset1, 'formset2': formset2})
         
-def solution(request,maxmin,objectivefunction,constraints):
+def solution(request,maxmin=None,objectivefunction=None,constraints=None):
     # display solution to optimization problem
     print(constraints)
+    if maxmin==None or objectivefunction==None or constraints==None:
+        return render(request, "solution.html", {'valid':False})
     mat = Simplex(constraints,(maxmin+" "+objectivefunction))
     mat.exe()
     finalvars=''
