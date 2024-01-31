@@ -2,7 +2,7 @@ from django import forms
 from .models import ObjectiveFunction, Constraint
 
 class ObjectiveFunctionForm(forms.Form):
-    objective_function = forms.CharField(max_length=200, required=True)
+    objective_function = forms.CharField(max_length=200, required=True, widget=forms.TextInput(attrs={'placeholder':'e.g. 2x+3y'}))
 
 class ConstraintForm(forms.Form):
     constraint = forms.CharField(max_length=200, required=True, widget=forms.TextInput(attrs={'placeholder':'e.g. x+y<=10 or 2w-z>=-4'}))
