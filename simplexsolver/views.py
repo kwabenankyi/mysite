@@ -59,3 +59,6 @@ def custom_404(request, exception):
 
 def ads(request):
     return render(request, "ads.txt", content_type="text/plain")
+
+def contact(request):
+    return render(request, "contact.html")
