@@ -6,9 +6,8 @@
     {% if valid == False %}
         <h2 style="color: crimson;">{{message}}</h2>
     {% endif %}
-    <h2>Enter your problem below:</h2>
     <form method="post" action="" id="dynamic-form">
-        <label for="maxmin">I want to:</label>
+        <b><label for="maxmin">I want to:</label></b>
         <select name="maxmin" id="maxmin" style="font-size: medium;">
             <option value="max">Maximise</option><br/>
             <option value="min">Minimise</option>
@@ -18,12 +17,12 @@
         <input type="radio" name="maxmin" id="maxmin" value="min">Minimise</input>-->
         {% csrf_token %}
         {% csrf_token %}
-        {{ formset1.as_p }}
+        <b>{{ formset1.as_p }}
         {{ formset2.management_form }}
         <div id="form2">
         {% for form in formset2 %}
         <div>{{ form }}</div>
-        {% endfor %}</div>
+        {% endfor %}</div></b>
         <button type="button" id="add-constraint" onclick="addConstraintField()">Add new constraint</button>
         <span id="remove"></span>
         <button type="submit" id="submit">Submit</button>

@@ -1,6 +1,6 @@
 .sidenav {
 	height: 100%;
-	width: 200px;
+	width: 160px;
 	position: fixed;
 	z-index: 1;
 	top: 0;
@@ -32,7 +32,7 @@
 	}
 body { background-color: wheat;
 	color: #818181;
-	font: 24px Helvetica Neue, sans-serif;  
+	font: 24px Trebuchet MS, sans-serif;  
 	/*line-height: 2.5;*/
 	text-align: center;
 	}
@@ -42,3 +42,14 @@ input[type=submit] {
 	color: #fff;
 	cursor: pointer;
 	}
+
+.banner1 {
+	width: 160px;
+    height: 600px; /* Adjust the height as per your requirement */
+    background-color: #3498db; /* Set the background color of the banner */
+    color: #fff; /* Set the text color */
+    text-align: center;
+    line-height: 100px; /* Center text vertically within the banner */
+    /*top: 0;
+    z-index: 1000;  Adjust the z-index as needed */
+}
