@@ -26,8 +26,8 @@
         <button type="button" id="add-constraint" onclick="addConstraintField()">Add new constraint</button>
         <span id="remove"></span>
         <button type="submit" id="submit">Submit</button>
-    <p id="note" style="font-size: medium;"><i>Note: any variable in the objective function with no constraint is assumed to be equal to 0.</i></p>
-    </form>
+    </form><br/>{% endblock %}
+    {% block footer %}<p id="note" style="font-size: medium;"><i>Note: any variable in the objective function with no constraint is assumed to be equal to 0.</i></p>
     <script src="/static/index.js"></script>
 
 {% endblock %}

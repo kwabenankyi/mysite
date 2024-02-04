@@ -21,5 +21,6 @@ handler404 = "simplexsolver.views.custom_404"
 
 urlpatterns = [
     path("", include("simplexsolver.urls")),
-    path("admin79/", admin.site.urls),
 ]
+
+"""path("admin79/", admin.site.urls),"""
