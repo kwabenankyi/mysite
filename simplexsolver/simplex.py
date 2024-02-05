@@ -22,26 +22,19 @@ class Simplex:
         term_pattern = re.compile(r'([+-]?\d+|-)?([a-zA-Z]+)?')
         for equation in equations:
             # Define a regular expression pattern to match terms in the equation
-            terms = term_pattern.findall(equation)
-            emptycount = 0
-            for term in terms:
-                if term == ('', ''):
-                    emptycount += 1
-            for i in range(emptycount):
-                terms.remove(('',''))
-
+            terms = [term for term in term_pattern.findall(equation) if term != ('', '')]
             coefficients = {}
             # Process each term
             for term in terms:
                 coefficient, variable = term
-
                 # If the coefficient is empty, set it to 1 or -1 based on the sign
                 if coefficient == '':
                     coefficient = float(1)
                 if coefficient == '-':
                     coefficient = float(-1)
 
-                if variable:#key variable, value is its coefficient
+                #key variable, value is its coefficient
+                if variable:
                     variables.add(variable)
                     coefficients[variable] = coefficient
                 else:
@@ -75,30 +68,23 @@ class Simplex:
                 variables.append("a"+str(count))
                 basicvars.append("a"+str(count))
         self.bigMFlag = 0
+        #if it contains both <= and >=
         if (bigMFlag[0] > 0) and (bigMFlag[1] > 0):
             self.bigMFlag = 1
             artFlag = 0
         return variables, coefficients, basicvars, artFlag
 
-    def placeCoeffInRow(self, listOfVars: str, rowcoeffs: dict, row):
-        for i in range(len(listOfVars)):
-            if listOfVars[i] in rowcoeffs:
-                row[i] = rowcoeffs[listOfVars[i]]
-        print(rowcoeffs)
-        row[len(listOfVars)] = rowcoeffs["rhs"]
-        return row
-
     def initialiseMatrix(self, constraints, objFunction): #sets up initial matrix
         var, co = self.extract_variables_and_coefficients(constraints)
-        objVar, objCo = self.extract_variables_and_coefficients([objFunction[4:]])
+        self.objVars, objCo = self.extract_variables_and_coefficients([objFunction[4:]])
         self.objCo = objCo[0]
         if objFunction[:3] == "max":
-            for i in range(len(objVar)):
-                objCo[0][objVar[i]] *= -1
+            for i in range(len(self.objVars)):
+                objCo[0][self.objVars[i]] *= -1
         objCo[0]["rhs"] = 0
 
         allvars, allcoeffs, basicVariables, self.artFlag = self.checkConstraints(constraints, var, co)
-        for item in objVar:
+        for item in self.objVars:
             if item not in allvars:
                 self.finalVariables[item] = 0
         #the row and column for the objective function
@@ -134,6 +120,14 @@ class Simplex:
                 if minRatio == 0 or (ratio < minRatio and ratio > 0):
                     minRatio = ratio
                     row = i
+        return row
+    
+    def placeCoeffInRow(self, listOfVars: str, rowcoeffs: dict, row):
+        for i in range(len(listOfVars)):
+            if listOfVars[i] in rowcoeffs:
+                row[i] = rowcoeffs[listOfVars[i]]
+        print(rowcoeffs)
+        row[len(listOfVars)] = rowcoeffs["rhs"]
         return row
     
     def setBasicVariables(self):

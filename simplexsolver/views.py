@@ -46,8 +46,12 @@ def solution(request,maxmin=None,objectivefunction=None,constraints=None):
     mat = Simplex(constraints,(maxmin+" "+objectivefunction))
     mat.exe()
     finalvars=''
-    for (key,value) in mat.finalVariables.items():
-        finalvars+=key+"="+str(value)+",<br>"
+    #ensures that the objective function variables are displayed first
+    for var in mat.objVars:
+        finalvars+=var+" = "+str(mat.finalVariables[var])+"<br/>"
+    for var in mat.variables:
+        if var not in mat.objVars:
+            finalvars+=var+" = "+str(mat.finalVariables[var])+"<br/>"
     return render(request, "solution.html", {'valid':True,'maxmin': maxmin, 'objectivefunction': objectivefunction, 'constraints': constraints, 'optimalvalue':mat.optimalValue, 'vars':mat.variables, 'final':finalvars[:len(finalvars)-5]})
 
 def about(request):
