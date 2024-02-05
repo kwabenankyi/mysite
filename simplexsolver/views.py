@@ -29,7 +29,7 @@ def index(request):
                         if char.isalpha() and char not in vars:
                             return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. All variables in constraints must be present in the objective function. Try again."})
                 else:
-                    return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. Constraints must contain a "<=" or ">=" sign. Try again."})
+                    return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. Constraints must contain a '<=' or '>=' sign. Try again."})
             return solution(request=request,maxmin=d['maxmin'],objectivefunction=objectivefunction,constraints=constraints)
 
     else:
