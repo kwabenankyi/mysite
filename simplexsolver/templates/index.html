@@ -16,18 +16,20 @@
         <!--<input type="radio" name="maxmin" id="maxmin" value="max">Maximise</input>
         <input type="radio" name="maxmin" id="maxmin" value="min">Minimise</input>-->
         {% csrf_token %}
-        {% csrf_token %}
         <b>{{ formset1.as_p }}
         {{ formset2.management_form }}
         <div id="form2">
-        {% for form in formset2 %}
-        <div>{{ form }}</div>
-        {% endfor %}</div></b>
+            
+            {% for form in formset2 %}
+            <div>{{ form }}</div>
+            {% endfor %}
+        </div></b>
         <button type="button" id="add-constraint" onclick="addConstraintField()">Add new constraint</button>
         <span id="remove"></span>
         <button type="submit" id="submit">Submit</button>
-    </form><br/>{% endblock %}
-    {% block footer %}<p id="note" style="font-size: medium;"><i>Note: any variable in the objective function with no constraint is assumed to be equal to 0.</i></p>
-    <script src="/static/index.js"></script>
-
+    </form><br/>
+{% endblock %}
+    
+{% block footer %}
+    <p id="note" style="font-size: medium;"><i>Note: any variable in the objective function with no constraint is assumed to be equal to 0.</i></p>
 {% endblock %}
