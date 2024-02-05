@@ -16,10 +16,10 @@
         <!--<input type="radio" name="maxmin" id="maxmin" value="max">Maximise</input>
         <input type="radio" name="maxmin" id="maxmin" value="min">Minimise</input>-->
         {% csrf_token %}
+        {% csrf_token %}
         <b>{{ formset1.as_p }}
         {{ formset2.management_form }}
         <div id="form2">
-            
             {% for form in formset2 %}
             <div>{{ form }}</div>
             {% endfor %}

@@ -26,6 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [".awsapprunner.com",'127.0.0.1',".co.uk"]
 
+CSRF_TRUSTED_ORIGINS = ['https://*.awsapprunner.com','https://*.127.0.0.1','https://*.co.uk']
+
 # Application definition
 
 INSTALLED_APPS = [
