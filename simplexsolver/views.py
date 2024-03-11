@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import ObjectiveFunctionForm, ConstraintsFormSet
 from .simplex import Simplex
+from .tools import *
 
 # Create your views here.
 def index(request):
@@ -10,19 +11,18 @@ def index(request):
         formset2 = ConstraintsFormSet(request.POST, prefix="formset2")
         if formset1.is_valid() and formset2.is_valid():
             d = request.POST.dict()
-            objectivefunction=d['formset1-objective_function']
+            objectivefunction=formatInput(d['formset1-objective_function'])
             constraints=[]
             numofconstraints = len(d)-7
             #validation for constraints
             if ("+" not in objectivefunction) and ("-" not in objectivefunction):
                 return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2,'message':"Invalid input. Objective function must contain a '+' or '-' sign. Try again."})
-            vars=set()
-            for char in objectivefunction:
-                if char.isalpha():
-                    vars.add(char)
+            
+            vars=set(char for char in objectivefunction if char.isalpha())
+            
             #checks if all variables in constraints are present in objective function
             for i in range(numofconstraints):
-                newcon = d['formset2-'+str(i)+'-constraint']
+                newcon = formatInput(d['formset2-'+str(i)+'-constraint'])
                 if ('<=' in newcon) or ('>=' in newcon): #format check
                     constraints.append(newcon)
                     for char in newcon:
@@ -41,6 +41,7 @@ def index(request):
 def solution(request,maxmin=None,objectivefunction=None,constraints=None):
     # display solution to optimization problem
     print(constraints)
+    #remove spaces from objective function
     if maxmin==None or objectivefunction==None or constraints==None:
         return render(request, "solution.html", {'valid':False})
     mat = Simplex(constraints,(maxmin+" "+objectivefunction))
@@ -52,7 +53,7 @@ def solution(request,maxmin=None,objectivefunction=None,constraints=None):
     for var in mat.variables:
         if var not in mat.objVars:
             finalvars+=var+" = "+str(mat.finalVariables[var])+"<br/>"
-    return render(request, "solution.html", {'valid':True,'maxmin': maxmin, 'objectivefunction': objectivefunction, 'constraints': constraints, 'optimalvalue':mat.optimalValue, 'vars':mat.variables, 'final':finalvars[:len(finalvars)-5]})
+    return render(request, "solution.html", {'valid':True,'maxmin': maxmin, 'objectivefunction': formatOutput(objectivefunction), 'constraints': [formatOutput(con) for con in constraints], 'optimalvalue':mat.optimalValue, 'vars':mat.variables, 'final':finalvars[:len(finalvars)-5]})
 
 def about(request):
     return render(request, "about.html")
