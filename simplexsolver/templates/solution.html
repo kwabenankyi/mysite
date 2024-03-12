@@ -5,11 +5,38 @@
 {% block content %}
     <h2>Linear programming simplex solution</h2>
     {% if valid == False %}
-        <h2 style="color: crimson;">You must submit parameters to receive a solution!</h2>
+        <h2 style="color: #dc143c;">You must submit parameters to receive a solution!</h2>
         <a href="/">Go back</a>
     {% else %}
         <p>Given the objective is to <b>{{maxmin}} {{ objectivefunction}}</b>, <br/>and the constraints were:<br/>{% for i in constraints %}<b>{{forloop.counter}}: {{i}}</b><br/> {% endfor %}</p>
-        <p>The optimal value is <b>{{ optimalvalue }}</b>, and the optimal solution is:<br/><b>{{final|safe}}</b>.</p>
-        <p style="font-size: medium;"><i>where the s & a variables refer to surplus and artificial variables to their corresponding constraints, indicated by their number, respectively.</i></p>
+        {% if optimalvalue %}
+            <p>The optimal value is <b>{{ optimalvalue }}</b>, and the optimal solution is:<br/><b>{{final|safe}}</b>.</p>
+            <p style="font-size: medium;"><i>where the s & a variables refer to surplus and artificial variables to their corresponding constraints, indicated by their number, respectively.</i></p>
+            <h2>The tableaus</h2>
+            {% for stage in stages %}
+                <h3>Pass {{forloop.counter}}</h3>
+                <table id="parsedTable">
+                    {% for row in stage %}
+                        <tr>
+                            {% if forloop.first %}
+                                {% for cell in row %}
+                                    <th>{{cell}}</th>
+                                {% endfor %}
+                            {% else %}
+                                {% for cell in row %}
+                                    {% if forloop.first %}
+                                        <th>{{cell}}</th>
+                                    {% else %}
+                                        <td>{{cell}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table><br>
+            {% endfor %}
+        {% else %}
+            <p>Unfortunately there is no feasible solution.</p>
+        {% endif %}
     {% endif %}
 {% endblock %}

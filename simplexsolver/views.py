@@ -40,20 +40,24 @@ def index(request):
         
 def solution(request,maxmin=None,objectivefunction=None,constraints=None):
     # display solution to optimization problem
-    print(constraints)
     #remove spaces from objective function
     if maxmin==None or objectivefunction==None or constraints==None:
         return render(request, "solution.html", {'valid':False})
+    print("oj",objectivefunction)
     mat = Simplex(constraints,(maxmin+" "+objectivefunction))
-    mat.exe()
+    feasible = mat.exe()
     finalvars=''
     #ensures that the objective function variables are displayed first
+
     for var in mat.objVars:
-        finalvars+=var+" = "+str(mat.finalVariables[var])+"<br/>"
+        finalvars += var+" = "+str(mat.finalVariables[var])+"<br/>"
     for var in mat.variables:
         if var not in mat.objVars:
-            finalvars+=var+" = "+str(mat.finalVariables[var])+"<br/>"
-    return render(request, "solution.html", {'valid':True,'maxmin': maxmin, 'objectivefunction': formatOutput(objectivefunction), 'constraints': [formatOutput(con) for con in constraints], 'optimalvalue':mat.optimalValue, 'vars':mat.variables, 'final':finalvars[:len(finalvars)-5]})
+            finalvars += var+" = "+str(mat.finalVariables[var])+"<br/>"
+    if feasible == True:
+        return render(request, "solution.html", {'valid':True,'maxmin': maxmin, 'objectivefunction': formatOutput(objectivefunction), 'constraints': [formatOutput(con) for con in constraints], 'optimalvalue':mat.optimalValue, 'vars':mat.variables, 'final':finalvars[:len(finalvars)-5], 'stages':mat.formatStages()})
+    else:
+        return render(request, "solution.html", {'valid':True, 'maxmin': maxmin, 'objectivefunction': formatOutput(objectivefunction), 'constraints': [formatOutput(con) for con in constraints]})
 
 def about(request):
     return render(request, "about.html")

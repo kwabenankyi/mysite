@@ -13,9 +13,11 @@ class Simplex:
         self.currentPivotCol = -1
         self.currentPivotRow = -1
         self.optimalValue = 0
+        self.stages = []
 
     def getVarIndex(self, var):
         return self.variables.index(var)
+    
     def extract_variables_and_coefficients(self, equations):
         variables = set()
         rowOfCoefficients = []
@@ -29,14 +31,14 @@ class Simplex:
                 coefficient, variable = term
                 # If the coefficient is empty, set it to 1 or -1 based on the sign
                 if coefficient == '':
-                    coefficient = float(1)
+                    coefficient = int(1)
                 if coefficient == '-':
-                    coefficient = float(-1)
+                    coefficient = int(-1)
 
                 #key variable, value is its coefficient
                 if variable:
                     variables.add(variable)
-                    coefficients[variable] = coefficient
+                    coefficients[variable] = float(coefficient)
                 else:
                     # If no variable is present, it's rhs term
                     coefficients['rhs'] = coefficient
@@ -79,9 +81,11 @@ class Simplex:
         self.objVars, objCo = self.extract_variables_and_coefficients([objFunction[4:]])
         self.objCo = objCo[0]
         if objFunction[:3] == "max":
-            for i in range(len(self.objVars)):
-                objCo[0][self.objVars[i]] *= -1
-        objCo[0]["rhs"] = 0
+            #multiply by -1 to convert to minimization problem
+            for key in self.objCo:
+                self.objCo[key] *= -1
+                print("objco1",self.objCo)
+        self.objCo["rhs"] = 0
 
         allvars, allcoeffs, basicVariables, self.artFlag = self.checkConstraints(constraints, var, co)
         for item in self.objVars:
@@ -95,8 +99,7 @@ class Simplex:
         for i in range(numOfRows-1): #for each constraint
             matrix[i] = self.placeCoeffInRow(allvars, allcoeffs[i], matrix[i])
 
-        matrix[numOfRows-1] = self.placeCoeffInRow(allvars, objCo[0], matrix[numOfRows-1])
-
+        matrix[numOfRows-1] = self.placeCoeffInRow(allvars, self.objCo, matrix[numOfRows-1])
         return matrix, allvars, allcoeffs, basicVariables
     
     def getPivotCol(self):
@@ -126,7 +129,6 @@ class Simplex:
         for i in range(len(listOfVars)):
             if listOfVars[i] in rowcoeffs:
                 row[i] = rowcoeffs[listOfVars[i]]
-        print(rowcoeffs)
         row[len(listOfVars)] = rowcoeffs["rhs"]
         return row
     
@@ -148,9 +150,9 @@ class Simplex:
             self.optimalValue *= -1
         print(f"\nOptimal value to {self.objFunction} given the constraints: \n{self.constraints} \nis {self.optimalValue}.")
         for var in self.variables:
-            if var not in self.basicVariables:
-                self.finalVariables[var] = 0
+            self.finalVariables[var] = 0 if var not in self.basicVariables else self.finalVariables[var]
             print(f"value of variable {var} = {self.finalVariables[var]}")
+        return True
         
     def setArtificialFunction(self):
         #get the artificial variables: I = -(a1+a2)
@@ -186,6 +188,7 @@ class Simplex:
             pass
         if self.matrix[self.numOfRows-1][self.numOfCols-1] != 0:
             print("No feasible solutions.")
+            return False
         else:
             print("moving to second stage.")
             newMatrix = np.zeros((self.numOfRows-1, self.finalLength))
@@ -200,11 +203,13 @@ class Simplex:
             self.artFlag = 0
             self.variables = copy(self.nonartificialVars)
             self.executeToFinalMatrix()
+            return True
 
     def executePass(self):
         print(self.variables)
         print(self.matrix)
         print(self.basicVariables)
+        self.stages.append([self.variables,list(self.matrix),self.basicVariables])
         self.currentPivotCol, minVal = self.getPivotCol()
         print("pivot col: ", self.currentPivotCol, " min val: ", minVal)
         if minVal >= 0:
@@ -238,7 +243,18 @@ class Simplex:
                     if self.variables[j].startswith("a") == False:
                         self.matrix[self.numOfRows-1][j] -= (self.M * self.matrix[row][j])
         if self.artFlag == 0:
-            self.executeToFinalMatrix()
+            return self.executeToFinalMatrix()
         else:
             self.setArtificialFunction()
-            self.executeToSecondStage()
+            return self.executeToSecondStage()
+    
+    def formatStages(self):
+        formatted = []
+        for stage in self.stages:
+            row = []
+            row.append(["Basic vars"] + stage[0] + ["RHS"])
+            for i in range(len(stage[2])):
+                row.append([stage[2][i]] + list(stage[1][i]))
+            row.append(["Obj"] + list(stage[1][-1]))
+            formatted.append(list(row))
+        return formatted
