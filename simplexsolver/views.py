@@ -22,14 +22,17 @@ def index(request):
             
             #checks if all variables in constraints are present in objective function
             for i in range(numofconstraints):
-                newcon = formatInput(d['formset2-'+str(i)+'-constraint'])
-                if ('<=' in newcon) or ('>=' in newcon): #format check
-                    constraints.append(newcon)
-                    for char in newcon:
-                        if char.isalpha() and char not in vars:
-                            return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. All variables in constraints must be present in the objective function. Try again."})
-                else:
-                    return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. Constraints must contain a '<=' or '>=' sign. Try again."})
+                try:
+                    newcon = formatInput(d['formset2-'+str(i)+'-constraint'])
+                    if ('<=' in newcon) or ('>=' in newcon): #format check
+                        constraints.append(newcon)
+                        for char in newcon:
+                            if char.isalpha() and char not in vars:
+                                return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. All variables in constraints must be present in the objective function. Try again."})
+                    else:
+                        return render(request, "index.html", {'valid':False, 'formset1': formset1, 'formset2': formset2, 'message':"Invalid input. Constraints must contain a '<=' or '>=' sign. Try again."})
+                except: #newcon is empty because constraint was deleted
+                    pass
             return solution(request=request,maxmin=d['maxmin'],objectivefunction=objectivefunction,constraints=constraints)
 
     else:
