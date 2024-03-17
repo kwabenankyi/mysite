@@ -209,7 +209,7 @@ class Simplex:
         print(self.variables)
         print(self.matrix)
         print(self.basicVariables)
-        self.stages.append([self.variables,list(self.matrix),self.basicVariables])
+        self.stages.append([copy(self.variables),copy(list(self.matrix)),copy(self.basicVariables)])
         self.currentPivotCol, minVal = self.getPivotCol()
         print("pivot col: ", self.currentPivotCol, " min val: ", minVal)
         if minVal >= 0:
