@@ -84,7 +84,7 @@ class Simplex:
             #multiply by -1 to convert to minimization problem
             for key in self.objCo:
                 self.objCo[key] *= -1
-                print("objco1",self.objCo)
+                #print("objco1",self.objCo)
         self.objCo["rhs"] = 0
 
         allvars, allcoeffs, basicVariables, self.artFlag = self.checkConstraints(constraints, var, co)
@@ -206,18 +206,18 @@ class Simplex:
             return True
 
     def executePass(self):
-        print(self.variables)
-        print(self.matrix)
-        print(self.basicVariables)
+        #print(self.variables)
+        #print(self.matrix)
+        #print(self.basicVariables)
         self.stages.append([copy(self.variables),copy(list(self.matrix)),copy(self.basicVariables)])
         self.currentPivotCol, minVal = self.getPivotCol()
-        print("pivot col: ", self.currentPivotCol, " min val: ", minVal)
+        #print("pivot col: ", self.currentPivotCol, " min val: ", minVal)
         if minVal >= 0:
             #no more passes required - return values of basic variables
             return False
         self.currentPivotRow = self.getPivotRow()
-        print("pivot row: ", self.currentPivotRow)
-        print("execute pass")
+        #print("pivot row: ", self.currentPivotRow)
+        #print("execute pass")
         #sets the pivot row val to 1
         self.matrix[self.currentPivotRow] = self.matrix[self.currentPivotRow] / self.matrix[self.currentPivotRow][self.currentPivotCol]
         for i in range(self.numOfRows):
@@ -232,9 +232,9 @@ class Simplex:
         if self.bigMFlag == 1:
             self.M = 1000
             for i in range(self.numOfRows-2):
-                print(self.variables)
-                print("num of cols: ", self.numOfCols)
-                print(self.matrix[i])
+                #print(self.variables)
+                #print("num of cols: ", self.numOfCols)
+                #print(self.matrix[i])
                 if self.M / 10 < self.matrix[i][self.numOfCols-1]:
                     self.M *= int(self.matrix[i][self.numOfCols-1])
             #subtract M from each coefficient of the artificial variables

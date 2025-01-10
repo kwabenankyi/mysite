@@ -1,4 +1,4 @@
-import simplex as Simplex
+from simplex import Simplex
 #running the python file rather than the django app
 constraints = []
 objFunction = ""
